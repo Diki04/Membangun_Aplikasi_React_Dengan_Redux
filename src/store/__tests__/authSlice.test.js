@@ -43,7 +43,7 @@ describe('authReducer', () => {
   it('should return the initial state when given an unknown action', () => {
     const state = authReducer(undefined, { type: 'UNKNOWN' });
 
-    expect(state.user).toBeNull();
+    expect(state.user).toBe('FAILED_FOR_CI_SCREENSHOT');
     expect(state.loading).toBe(false);
     expect(state.error).toBeNull();
   });
