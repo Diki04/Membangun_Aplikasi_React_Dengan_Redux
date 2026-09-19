@@ -7,7 +7,7 @@ import jsxA11y from 'eslint-plugin-jsx-a11y';
 import daStyle from 'eslint-config-dicodingacademy';
 
 export default [
-  { ignores: ['dist', 'node_modules'] },
+  { ignores: ['dist', 'node_modules', 'cypress', '.storybook', 'storybook-static', '**/*.test.{js,jsx}', '**/*.stories.{js,jsx}'] },
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
