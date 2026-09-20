@@ -1,0 +1,13 @@
+{
+  "ts-node": {
+    "skipProject": true,
+    "transpileOnly": true
+  },
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "allowJs": true
+  }
+}

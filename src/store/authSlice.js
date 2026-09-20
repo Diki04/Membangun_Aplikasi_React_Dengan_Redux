@@ -1,10 +1,41 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { loginUser, registerUser, getOwnProfile } from '../api/api';
 
+const getStoredToken = () => {
+  try {
+    if (typeof localStorage !== 'undefined' && localStorage && typeof localStorage.getItem === 'function') {
+      return localStorage.getItem('accessToken') || null;
+    }
+  } catch {
+    return null;
+  }
+  return null;
+};
+
+const setStoredToken = (token) => {
+  try {
+    if (typeof localStorage !== 'undefined' && localStorage && typeof localStorage.setItem === 'function') {
+      localStorage.setItem('accessToken', token);
+    }
+  } catch {
+    // ignore
+  }
+};
+
+const removeStoredToken = () => {
+  try {
+    if (typeof localStorage !== 'undefined' && localStorage && typeof localStorage.removeItem === 'function') {
+      localStorage.removeItem('accessToken');
+    }
+  } catch {
+    // ignore
+  }
+};
+
 export const login = createAsyncThunk('auth/login', async (credentials, { rejectWithValue }) => {
   try {
     const data = await loginUser(credentials);
-    localStorage.setItem('accessToken', data.token);
+    setStoredToken(data.token);
     return data.token;
   } catch (error) {
     return rejectWithValue(error.message);
@@ -32,14 +63,14 @@ const authSlice = createSlice({
   name: 'auth',
   initialState: {
     user: null,
-    token: localStorage.getItem('accessToken') || null,
-    isAuthenticated: !!localStorage.getItem('accessToken'),
+    token: getStoredToken(),
+    isAuthenticated: !!getStoredToken(),
     loading: false,
     error: null,
   },
   reducers: {
     logout: (state) => {
-      localStorage.removeItem('accessToken');
+      removeStoredToken();
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
@@ -82,10 +113,11 @@ const authSlice = createSlice({
         state.user = null;
         state.isAuthenticated = false;
         state.token = null;
-        localStorage.removeItem('accessToken');
+        removeStoredToken();
       });
   },
 });
 
 export const { logout, clearError } = authSlice.actions;
 export default authSlice.reducer;
+

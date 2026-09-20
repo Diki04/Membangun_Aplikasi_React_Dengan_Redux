@@ -1,8 +1,16 @@
 const BASE_URL = 'https://forum-api.dicoding.dev/v1';
 
 function getToken() {
-  return localStorage.getItem('accessToken');
+  try {
+    if (typeof localStorage !== 'undefined' && localStorage && typeof localStorage.getItem === 'function') {
+      return localStorage.getItem('accessToken');
+    }
+  } catch {
+    return null;
+  }
+  return null;
 }
+
 
 async function fetchWithAuth(url, options = {}) {
   const token = getToken();
